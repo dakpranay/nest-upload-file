@@ -1,0 +1,73 @@
+<h1>User Form</h1>
+<div>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <!-- Name Field -->
+    <label for="name">Name:</label>
+    <input id="name" type="text" formControlName="name" />
+    <div
+      *ngIf="
+        userForm.controls['name'].invalid &&
+        (userForm.controls['name'].dirty || userForm.controls['name'].touched)
+      "
+    >
+      <div *ngIf="userForm.controls['name'].errors?.['required']">
+        Name is required.
+      </div>
+      <div *ngIf="userForm.controls['name'].errors?.['minlength']">
+        Name must be at least 3 characters long.
+      </div>
+    </div>
+
+    <!-- Email Field -->
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email" />
+    <div
+      *ngIf="
+        userForm.controls['email'].invalid &&
+        (userForm.controls['email'].dirty || userForm.controls['email'].touched)
+      "
+    >
+      <div *ngIf="userForm.controls['email'].errors?.['required']">
+        Email is required.
+      </div>
+      <div *ngIf="userForm.controls['email'].errors?.['email']">
+        Email is invalid.
+      </div>
+    </div>
+
+    <!-- Phone Number Field -->
+    <label for="phoneNumber">Phone Number:</label>
+    <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+    <div
+      *ngIf="
+        userForm.controls['phoneNumber'].invalid &&
+        (userForm.controls['phoneNumber'].dirty ||
+          userForm.controls['phoneNumber'].touched)
+      "
+    >
+      <div *ngIf="userForm.controls['phoneNumber'].errors?.['required']">
+        Phone number is required.
+      </div>
+      <div *ngIf="userForm.controls['phoneNumber'].errors?.['pattern']">
+        Phone number must be numeric.
+      </div>
+    </div>
+
+    <!-- File Upload Field -->
+    <label for="file">Upload File:</label>
+    <input id="file" type="file" (change)="onFileChange($event)" />
+    <div
+      *ngIf="
+        userForm.controls['file'].invalid &&
+        (userForm.controls['file'].dirty || userForm.controls['file'].touched)
+      "
+    >
+      <div *ngIf="userForm.controls['file'].errors?.['required']">
+        File is required.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="userForm.invalid">Submit</button>
+  </form>
+</div>
