@@ -23,6 +23,8 @@ export class UserController {
     @Body() userData: UserRequestDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log(userData);
+
     const user = await this.userService.uploadUserData(userData, file);
     return user;
     // const uploadedFile = await this.cloudinaryService.uploadFile(file);

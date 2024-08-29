@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent {
   userForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.userForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -18,9 +19,28 @@ export class AppComponent {
     });
   }
 
+  createFormData(formValue: any): FormData {
+    const formData = new FormData();
+    for (const key in formValue) {
+      formData.append(key, formValue[key]);
+    }
+    return formData;
+  }
+
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form Data: ', this.userForm.value);
+      let apiUrl = 'http://localhost:3000/user';
+      const formData = this.createFormData(this.userForm.value);
+      // Post the form data to the API
+      this.http.post(apiUrl, formData).subscribe(
+        (response) => {
+          console.log('Data posted successfully', response);
+        },
+        (error) => {
+          console.error('Error posting data', error);
+        }
+      );
+
       this.userForm.reset();
     }
   }
