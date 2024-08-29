@@ -24,9 +24,11 @@ export class UserService {
         ...userData,
         file: cloudinaryResponse.secure_url,
       });
-      console.log(user);
       return this.userRepository.save(user);
     } catch (err) {
+      if (cloudinaryResponse && !user) {
+        this.cloudinaryService.deleteFile(cloudinaryResponse.public_id);
+      }
       console.log(err);
     }
   }

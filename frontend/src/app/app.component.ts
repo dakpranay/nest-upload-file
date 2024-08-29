@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   userForm: FormGroup;
+  isUploading: boolean = false;
+  uploadMessage: string = '';
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.userForm = this.formBuilder.group({
@@ -29,19 +31,33 @@ export class AppComponent {
 
   onSubmit() {
     if (this.userForm.valid) {
-      let apiUrl = 'http://localhost:3000/user';
+      this.isUploading = true;
+      let apiUrl = 'http://localhost:3000/api/v1/user';
       const formData = this.createFormData(this.userForm.value);
+
       // Post the form data to the API
       this.http.post(apiUrl, formData).subscribe(
         (response) => {
+          this.isUploading = false;
+          this.uploadMessage = 'Uploaded successfully!';
           console.log('Data posted successfully', response);
+          this.isUploading = false;
         },
         (error) => {
+          this.isUploading = false;
+          this.uploadMessage = 'Failed to upload. Please try again.';
           console.error('Error posting data', error);
         }
       );
 
       this.userForm.reset();
+      this.userForm.patchValue({
+        file: null,
+      });
+      const fileInput = document.getElementById('file') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
     }
   }
 

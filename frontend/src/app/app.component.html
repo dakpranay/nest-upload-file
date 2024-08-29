@@ -67,6 +67,10 @@
       </div>
     </div>
 
+    <!--upload status -->
+    <div *ngIf="isUploading">Uploading...</div>
+    <div *ngIf="uploadMessage">{{ uploadMessage }}</div>
+
     <!-- Submit Button -->
     <button type="submit" [disabled]="userForm.invalid">Submit</button>
   </form>

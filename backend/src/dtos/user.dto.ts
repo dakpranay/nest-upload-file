@@ -6,10 +6,10 @@ export class UserRequestDto {
   name: string;
 
   @IsNotEmpty()
-  @IsEmail()
+  // @IsEmail() is nor working for "1@gmail.com,dakprnay@gmail.com"
   email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber()
+  @IsPhoneNumber('IN')
   phoneNumber: string;
 }

@@ -4,7 +4,7 @@ const streamifier = require('streamifier');
 
 @Injectable()
 export class CloudinaryService {
-  uploadFile(
+  async uploadFile(
     file: Express.Multer.File,
   ): Promise<UploadApiErrorResponse | UploadApiResponse> {
     return new Promise<UploadApiErrorResponse | UploadApiResponse>(
@@ -17,5 +17,19 @@ export class CloudinaryService {
         streamifier.createReadStream(file.buffer).pipe(uploadStream);
       },
     );
+  }
+
+  async deleteFile(
+    publicId: string,
+  ): Promise<UploadApiErrorResponse | UploadApiResponse> {
+    return new Promise((resolve, reject) => {
+      v2.uploader.destroy(publicId, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 }
