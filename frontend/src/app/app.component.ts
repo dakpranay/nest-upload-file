@@ -42,6 +42,14 @@ export class AppComponent {
           this.uploadMessage = 'Uploaded successfully!';
           console.log('Data posted successfully', response);
           this.isUploading = false;
+          this.userForm.reset();
+          this.userForm.patchValue({
+            file: null,
+          });
+          const fileInput = document.getElementById('file') as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = '';
+          }
         },
         (error) => {
           this.isUploading = false;
@@ -49,15 +57,6 @@ export class AppComponent {
           console.error('Error posting data', error);
         }
       );
-
-      this.userForm.reset();
-      this.userForm.patchValue({
-        file: null,
-      });
-      const fileInput = document.getElementById('file') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
     }
   }
 

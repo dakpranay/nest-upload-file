@@ -14,6 +14,7 @@ export class UserSchema {
   @Column()
   phoneNumber: string;
 
+  // @Column() why this give error
   @Column({ nullable: true })
   file: string;
 }
